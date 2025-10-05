@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    [SerializeField] private float velocity = 8f;
-
-    [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private float lenghtRayCast = 1f;
-
+    [SerializeField] private PlayerDataSO data;
     [SerializeField] private LayerMask layerMask;
-
     [SerializeField] private bool isGrounded;
     [SerializeField] private Rigidbody2D rb;
-
     [SerializeField] private Animator animator;
 
 
@@ -24,9 +17,9 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        float velocityX = Input.GetAxis("Horizontal") * Time.deltaTime * velocity;
+        float velocityX = Input.GetAxis("Horizontal") * Time.deltaTime * data.velocity;
 
-        animator.SetFloat("Movement", velocityX * velocity);
+        animator.SetFloat("Movement", velocityX * data.velocity);
 
         if (velocityX < 0)
         {
@@ -40,12 +33,12 @@ public class PlayerController : MonoBehaviour
         Vector3 position = transform.position;
         transform.position = new Vector3(velocityX + position.x, position.y, position.z);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, lenghtRayCast, layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, layerMask);
         isGrounded = hit.collider != null;
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(0f, data.jumpForce), ForceMode2D.Impulse);
         }
 
         animator.SetBool("isGrounded", isGrounded); 
