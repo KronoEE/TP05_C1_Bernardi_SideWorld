@@ -5,9 +5,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    [SerializeField] private float velocity = 10.0f;
+    [SerializeField] private float velocity = 8f;
+
+    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float lenghtRayCast = 1f;
+
+    [SerializeField] private LayerMask layerMask;
+
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private Rigidbody2D rb;
+
     [SerializeField] private Animator animator;
 
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     void Update()
     {
         float velocityX = Input.GetAxis("Horizontal") * Time.deltaTime * velocity;
@@ -24,7 +38,16 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 position = transform.position;
-
         transform.position = new Vector3(velocityX + position.x, position.y, position.z);
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, lenghtRayCast, layerMask);
+        isGrounded = hit.collider != null;
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+        }
+
+        animator.SetBool("isGrounded", isGrounded); 
     }
 }
