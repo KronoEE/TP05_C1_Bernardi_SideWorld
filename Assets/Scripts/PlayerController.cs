@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool takingDamage;
     private bool attacking;
+    public bool isDead;
+
+    [SerializeField] private int health = 3;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
@@ -21,27 +25,31 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (!attacking)
+        if (!isDead)
         {
-            Movement();
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, layerMask);
-            isGrounded = hit.collider != null;
-
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
+            if (!attacking)
             {
-                rb.AddForce(new Vector2(0f, data.jumpForce), ForceMode2D.Impulse);
+                Movement();
+
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, layerMask);
+                isGrounded = hit.collider != null;
+
+                if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
+                {
+                    rb.AddForce(new Vector2(0f, data.jumpForce), ForceMode2D.Impulse);
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Z) && !attacking && isGrounded)
-        {
-            Attacking();
-        }
+            if (Input.GetKeyDown(KeyCode.Z) && !attacking && isGrounded)
+            {
+                Attacking();
+            }
 
+        }
         animator.SetBool("isGrounded", isGrounded); 
         animator.SetBool("takingDamage", takingDamage);
         animator.SetBool("attacking", attacking);
+        animator.SetBool("isDead", isDead);
     }
 
     public void Movement()
@@ -65,13 +73,21 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(velocityX + position.x, position.y, position.z);
     }
 
-    public void ReceiveDamage(Vector2 direction, int damageAmount)
+    public void TakingDamage(Vector2 direction, int damageAmount)
     {
         if (!takingDamage)
         {
-        takingDamage = true;
-        Vector2 rebound = new Vector2(transform.position.x - direction.x, 0.5f).normalized;
-        rb.AddForce(rebound * data.reboundForce, ForceMode2D.Impulse);
+            takingDamage = true;
+            health -= damageAmount;
+            if (health <= 0)
+            {
+                isDead = true;
+            }
+            if (!isDead)
+            {
+                Vector2 rebound = new Vector2(transform.position.x - direction.x, 0.5f).normalized;
+                rb.AddForce(rebound * data.reboundForce, ForceMode2D.Impulse);
+            }
         }   
     }
 
