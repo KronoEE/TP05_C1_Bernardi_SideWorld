@@ -22,9 +22,9 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -2645278852017342422, guid: e4c84314f4ae66a45ba5bc923916c6ef, type: 3}
-    - time: 0.13333334
+    - time: 0.1
       value: {fileID: -4034009452569481921, guid: 4606368b129423b4ebd8b0fbc58feb6d, type: 3}
-    - time: 0.25
+    - time: 0.16666667
       value: {fileID: 1041867518613997539, guid: 50efc9d1d837d294a9fdbebdf95d168a, type: 3}
     attribute: m_Sprite
     path: 
@@ -56,7 +56,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.26666668
+    m_StopTime: 0.18333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -75,4 +75,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.18333334
+    functionName: DeactiveDamage
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

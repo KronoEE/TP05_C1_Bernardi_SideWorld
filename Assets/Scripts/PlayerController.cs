@@ -6,7 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerDataSO data;
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private bool isGrounded;
+
+    private bool isGrounded;
+    private bool takingDamage;
+
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
 
@@ -31,16 +35,35 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 position = transform.position;
+
+        if (!takingDamage)
         transform.position = new Vector3(velocityX + position.x, position.y, position.z);
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, layerMask);
         isGrounded = hit.collider != null;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
         {
             rb.AddForce(new Vector2(0f, data.jumpForce), ForceMode2D.Impulse);
         }
 
         animator.SetBool("isGrounded", isGrounded); 
+        animator.SetBool("takingDamage", takingDamage);
     }
+
+    public void ReceiveDamage(Vector2 direction, int damageAmount)
+    {
+        if (!takingDamage)
+        {
+        takingDamage = true;
+        Vector2 rebound = new Vector2(transform.position.x - direction.x, 1).normalized;
+        rb.AddForce(rebound * data.ReboundForce, ForceMode2D.Impulse);
+        }   
+    }
+
+    public void DeactiveDamage()
+    {
+        takingDamage = false;
+    }
+
 }

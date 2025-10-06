@@ -5,8 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    [SerializeField] private float detectionRadius = 5f;
-    [SerializeField] private float speed = 2f;
+    [SerializeField] private EnemyDataSO data;
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -19,7 +18,7 @@ public class EnemyController : MonoBehaviour
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (distanceToPlayer < detectionRadius)
+        if (distanceToPlayer < data.detectionRadius)
         {
             Vector2 direction = (player.position - transform.position).normalized;
 
@@ -29,6 +28,18 @@ public class EnemyController : MonoBehaviour
         {
             movement = Vector2.zero;
         }
-        rb.MovePosition(rb.position + movement * speed * Time.deltaTime);
+        rb.MovePosition(rb.position + movement * data.speed * Time.deltaTime);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Vector2 directionDamage = new Vector2(transform.position.x, 0);
+            collision.gameObject.GetComponent<PlayerController>().ReceiveDamage(directionDamage, 1);
+        }
+    }
+
+
+
 }

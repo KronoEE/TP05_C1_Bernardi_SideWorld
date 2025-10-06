@@ -156,7 +156,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 2147483648
-  isGrounded: 0
   rb: {fileID: 19148500}
   animator: {fileID: 19148501}
 --- !u!212 &19148497
@@ -690,8 +689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 19148498}
-  detectionRadius: 5
-  speed: 10
+  data: {fileID: 11400000, guid: 7db23cdf7a36d5e458f20612c3d9d111, type: 2}
 --- !u!61 &1425092796
 BoxCollider2D:
   m_ObjectHideFlags: 0

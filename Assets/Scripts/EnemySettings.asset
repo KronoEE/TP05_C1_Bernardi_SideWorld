@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc1b0e5e22cd5e244989d7b173aa3f52, type: 3}
-  m_Name: PlayerSettings
+  m_Script: {fileID: 11500000, guid: 6cde12d65ffee1345b8ac5c69b651625, type: 3}
+  m_Name: EnemySettings
   m_EditorClassIdentifier: 
-  velocity: 8
-  jumpForce: 8
-  ReboundForce: 5
-  lengthRayCast: 1
+  detectionRadius: 5
+  speed: 2
