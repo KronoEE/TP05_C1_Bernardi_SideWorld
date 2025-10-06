@@ -9,9 +9,13 @@ public class EnemyController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 movement;
+    private bool isMoving;
+    private bool takingDamage;
+    private Animator animator;
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();   
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -22,21 +26,43 @@ public class EnemyController : MonoBehaviour
         {
             Vector2 direction = (player.position - transform.position).normalized;
 
+            if (direction.x < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            if (direction.x > 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
             movement = new Vector2(direction.x, 0);
+
+            isMoving = true;
         }
         else
         {
             movement = Vector2.zero;
+            isMoving = false;
         }
-        rb.MovePosition(rb.position + movement * data.speed * Time.deltaTime);
+        if(!takingDamage)
+            rb.MovePosition(rb.position + movement * data.speed * Time.deltaTime);
+
+        animator.SetBool("isMoving", isMoving);
     }
 
+    public void ReceiveDamage(Vector2 direction, int damageAmount)
+    {
+        if (!takingDamage)
+        {
+            takingDamage = true;
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             Vector2 directionDamage = new Vector2(transform.position.x, 0);
-            collision.gameObject.GetComponent<PlayerController>().ReceiveDamage(directionDamage, 1);
+            ReceiveDamage(directionDamage, 1);
         }
     }
 
