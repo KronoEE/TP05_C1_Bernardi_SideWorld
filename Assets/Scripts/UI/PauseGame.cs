@@ -8,6 +8,7 @@ public class PauseGame : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject settingsMenu;
+    [SerializeField] GameObject deathMenu;
     [SerializeField] Button pauseBtn;
     [SerializeField] Button resumeBtn;
     [SerializeField] Button settingsBtn;
@@ -44,7 +45,7 @@ public class PauseGame : MonoBehaviour
         }
     }
 
-    public void ResumeGame()
+    private void ResumeGame()
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1;

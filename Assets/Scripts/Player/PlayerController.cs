@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int health = 3;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject deathPanel;
 
     private bool isGrounded;
     private bool takingDamage;
@@ -43,7 +44,6 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isGrounded", isGrounded); 
         animator.SetBool("takingDamage", takingDamage);
         animator.SetBool("attacking", attacking);
-        animator.SetBool("isDead", isDead);
     }
 
     public void Movement()
@@ -75,7 +75,10 @@ public class PlayerController : MonoBehaviour
             health -= damageAmount;
             if (health <= 0)
             {
+                deathPanel.SetActive(true);
+                animator.SetBool("isDead", isDead);
                 isDead = true;
+                Time.timeScale = 0;
             }
             if (!isDead)
             {
