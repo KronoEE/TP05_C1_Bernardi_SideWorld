@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private EnemyDataSO data;
     [SerializeField] private int health = 100;
-    [SerializeField] private GameObject deathEffect;
+    [SerializeField] private ParticleSystem deathEffect;
 
     private Rigidbody2D rb;
-    private Vector2 movement;
+    private float movementX;
     private bool isMoving;
     private bool playerAlive;
     private bool isDead;
@@ -61,16 +62,16 @@ public class EnemyController : MonoBehaviour
                 transform.localScale = new Vector3(1, 1, 1);
             }
 
-            movement = new Vector2(direction.x, 0);
+            movementX = direction.x;
 
             isMoving = true;
         }
         else
         {
-            movement = Vector2.zero;
+            movementX = 0;
             isMoving = false;
         }
-            rb.MovePosition(rb.position + movement * data.speed * Time.deltaTime);
+            rb.velocity = new Vector2(movementX * data.speed, rb.velocity.y);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -92,11 +93,11 @@ public class EnemyController : MonoBehaviour
     }
     private void Die()
     {
-        //Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
         rb.velocity = Vector2.zero;
 
         animator.SetBool("isDead", isDead);
-        Destroy(gameObject, 0.35f);
+        Destroy(gameObject, 0.5f);
     }
 }
 

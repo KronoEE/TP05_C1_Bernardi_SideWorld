@@ -178,7 +178,7 @@ MonoBehaviour:
   player: {fileID: 794016725207322093, guid: 3be7c985f0d2b074fbde1d5342dce20c, type: 3}
   data: {fileID: 11400000, guid: 7db23cdf7a36d5e458f20612c3d9d111, type: 2}
   health: 100
-  deathEffect: {fileID: 0}
+  deathEffect: {fileID: 3102809954353889741, guid: bc9bf3538dd3d954baac80d4253e29dd, type: 3}
 --- !u!95 &3630773987656946402
 Animator:
   serializedVersion: 7
