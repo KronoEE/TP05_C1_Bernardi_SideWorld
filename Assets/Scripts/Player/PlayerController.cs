@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerDataSO data;
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] public int health = 3;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject deathPanel;
@@ -16,8 +15,11 @@ public class PlayerController : MonoBehaviour
     private bool takingDamage;
     private bool attacking;
     private bool m_FacingRight = true;
-
     public bool isDead;
+
+    public int coins = 0;
+    public float jumpForce = 10f;
+    public int health = 3;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,7 +35,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = hit.collider != null;
                 if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
                 {
-                    rb.AddForce(new Vector2(0f, data.jumpForce), ForceMode2D.Impulse);
+                    rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 }
             }
             if (Input.GetKeyDown(KeyCode.Mouse0) && !attacking && isGrounded)

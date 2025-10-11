@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class JumpPowerUp : MonoBehaviour
 {
-    private int coinsToAdd = 1;
+    [SerializeField] private int jumpForceToAdd = 5;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         int playerLayer = LayerMask.NameToLayer("Player");
@@ -12,7 +12,7 @@ public class Coin : MonoBehaviour
         if (collision.gameObject.layer == playerLayer)
         {
             PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
-            playerScript.coins += playerScript.coins + coinsToAdd;
+            playerScript.jumpForce += playerScript.health + jumpForceToAdd;
             Destroy(gameObject);
         }
     }
