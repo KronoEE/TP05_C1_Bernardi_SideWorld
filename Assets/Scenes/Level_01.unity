@@ -7179,7 +7179,7 @@ PrefabInstance:
     - target: {fileID: 5666937932550120154, guid: 3be7c985f0d2b074fbde1d5342dce20c, type: 3}
       propertyPath: deathPanel
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 697038524}
     - target: {fileID: 8509575575047201273, guid: 3be7c985f0d2b074fbde1d5342dce20c, type: 3}
       propertyPath: m_Name
       value: Player
