@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Deathpanel : MonoBehaviour
 {
+    [SerializeField] GameObject settingsPanel;
+    [SerializeField] Button settingsButtonbackBtn;
     [SerializeField] Button restartBtn;
     [SerializeField] Button settingsBtn;
     [SerializeField] Button homeBtn;
@@ -31,7 +33,7 @@ public class Deathpanel : MonoBehaviour
 
     private void OnSettingsClicked()
     {
-
+        settingsPanel.SetActive(true);
     }
 
     private void OnHomeClicked()
@@ -39,4 +41,8 @@ public class Deathpanel : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    private void OnSettingsBack()
+    {
+        settingsPanel.SetActive(false);
+    }
 }

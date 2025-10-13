@@ -1493,6 +1493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc1a61015afefb4fb88304b9bf4b260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsPanel: {fileID: 412261170}
+  settingsButtonbackBtn: {fileID: 891936074}
   restartBtn: {fileID: 1692691836}
   settingsBtn: {fileID: 1640525138}
   homeBtn: {fileID: 1970729353}
