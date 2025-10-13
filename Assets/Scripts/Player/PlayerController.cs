@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject deathPanel;
 
+    AudioManager audioManager;
+
     private bool isGrounded;
     private bool takingDamage;
     private bool attacking;
@@ -20,11 +22,16 @@ public class PlayerController : MonoBehaviour
     public int coins = 0;
     public float jumpForce = 10f;
     public int health = 3;
-    void Start()
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-    void Update()
+    private void Update()
     {
         if (!isDead)
         {
@@ -35,6 +42,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = hit.collider != null;
                 if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
                 {
+                    audioManager.PlaySFX(audioManager.jumpSfx);
                     rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 }
             }

@@ -13,6 +13,8 @@ public class PauseGame : MonoBehaviour
     [SerializeField] Button resumeBtn;
     [SerializeField] Button settingsBtn;
     [SerializeField] Button homeBtn;
+    [SerializeField] Button settingsBackBtn;
+
     public bool isPaused = false;
 
     private void Awake()
@@ -21,6 +23,7 @@ public class PauseGame : MonoBehaviour
         resumeBtn.onClick.AddListener(ResumeGame);
         settingsBtn.onClick.AddListener(OnSettingsClicked);
         homeBtn.onClick.AddListener(OnHomeClicked);
+        settingsBackBtn.onClick.AddListener(OnSettingsBack);
     }
 
     private void OnDestroy()
@@ -29,6 +32,7 @@ public class PauseGame : MonoBehaviour
         resumeBtn.onClick.RemoveAllListeners();
         settingsBtn.onClick.RemoveAllListeners();
         homeBtn.onClick.RemoveAllListeners();
+        settingsBackBtn.onClick.RemoveAllListeners();
     }
     private void Update()
     {
@@ -67,6 +71,11 @@ public class PauseGame : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         Time.timeScale = 1;
+    }
+
+    private void OnSettingsBack()
+    {
+        settingsMenu.SetActive(false);
     }
 }
 
