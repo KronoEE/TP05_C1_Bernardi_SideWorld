@@ -27,7 +27,8 @@ public class MainMenuSystem : MonoBehaviour
     }
     void OnPlayClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("Level_01");
+        Time.timeScale = 1;
     }
 
     void OnQuitClicked()
