@@ -6,15 +6,14 @@ public class PlayerShoot : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject bulletPrefab;
+    private PlayerController playerController;
     void Start()
     {
-        
+        playerController = GetComponent<PlayerController>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && playerController.attackCondition)
         {
             Shoot();
         }

@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -10,14 +12,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject deathPanel;
+    [SerializeField] private CoinManager coinManager;
 
     AudioManager audioManager;
 
     private bool isGrounded;
     private bool takingDamage;
-    private bool attacking;
     private bool m_FacingRight = true;
-    public bool isDead;
+    public bool attackCondition;
+    public bool bisAttacking;
+    public  bool isDead;
 
     public int coins = 0;
     public float jumpForce = 10f;
@@ -35,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isDead)
         {
-            if (!attacking)
+            if (!bisAttacking)
             {
                 Movement();
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, layerMask);
@@ -46,14 +50,16 @@ public class PlayerController : MonoBehaviour
                     rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.E) && !attacking && isGrounded)
+            bool condition = !bisAttacking && isGrounded;
+            attackCondition = condition;
+            if (Input.GetKeyDown(KeyCode.E) && attackCondition)
             {
                 Attacking();
             }
         }
         animator.SetBool("isGrounded", isGrounded); 
         animator.SetBool("takingDamage", takingDamage);
-        animator.SetBool("attacking", attacking);
+        animator.SetBool("attacking", bisAttacking);
     }
 
     public void Movement()
@@ -106,12 +112,12 @@ public class PlayerController : MonoBehaviour
 
     public void Attacking()
     {
-        attacking = true;
+        bisAttacking = true;
     }
 
     public void DeactiveAttack()
     {
-        attacking = false;
+        bisAttacking = false;
     }
     private void Flip()
     {
@@ -119,5 +125,17 @@ public class PlayerController : MonoBehaviour
         m_FacingRight = !m_FacingRight;
 
         transform.Rotate(0f, 180f, 0f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        int coinLayer = LayerMask.NameToLayer("Coin");
+
+        if (other.gameObject.layer == coinLayer)
+        {
+            Destroy(other.gameObject);
+            audioManager.PlaySFX(audioManager.coinsSfx);
+            coinManager.coinCount++;
+        }
     }
 }
