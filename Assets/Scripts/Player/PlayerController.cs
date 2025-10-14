@@ -91,6 +91,8 @@ public class PlayerController : MonoBehaviour
             health -= damageAmount;
             if (health <= 0)
             {
+                audioManager.Stop();
+                audioManager.PlaySFX(audioManager.LooseSfx);
                 deathPanel.SetActive(true);
                 animator.SetBool("isDead", isDead);
                 isDead = true;
