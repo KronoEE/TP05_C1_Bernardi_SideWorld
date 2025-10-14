@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
             attackCondition = condition;
             if (Input.GetKeyDown(KeyCode.E) && attackCondition)
             {
+                audioManager.PlaySFX(audioManager.ShootSfx);
                 Attacking();
             }
         }

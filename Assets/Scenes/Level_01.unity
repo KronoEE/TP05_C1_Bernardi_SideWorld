@@ -2248,8 +2248,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812ad4645d197da49bb23d3e56518b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinCount: 0
   coinText: {fileID: 1088370545}
+  panelWin: {fileID: 1824866517}
+  coinCount: 0
 --- !u!4 &836821772
 Transform:
   m_ObjectHideFlags: 0
@@ -12191,6 +12192,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 464006937737145678, guid: 18fa64e26c0f6624c94ca6bb1db35e36, type: 3}
+      propertyPath: WinSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 9422853612358a44fbe7da7ebdd31982, type: 3}
+    - target: {fileID: 464006937737145678, guid: 18fa64e26c0f6624c94ca6bb1db35e36, type: 3}
+      propertyPath: LooseSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 3ab90c7ff7748584ab5b188d2f8763b9, type: 3}
+    - target: {fileID: 464006937737145678, guid: 18fa64e26c0f6624c94ca6bb1db35e36, type: 3}
+      propertyPath: ShootSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: eef7b2dad0d91d948b779f818cb2434b, type: 3}
     - target: {fileID: 1619609781505797213, guid: 18fa64e26c0f6624c94ca6bb1db35e36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

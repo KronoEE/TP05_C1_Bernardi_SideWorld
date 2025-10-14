@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip jumpSfx;
     public AudioClip WinSfx;
     public AudioClip LooseSfx;
+    public AudioClip ShootSfx;
 
     private void Start()
     {
