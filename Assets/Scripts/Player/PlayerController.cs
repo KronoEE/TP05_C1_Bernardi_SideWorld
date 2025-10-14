@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
                     rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !attacking && isGrounded)
+            if (Input.GetKeyDown(KeyCode.E) && !attacking && isGrounded)
             {
                 Attacking();
             }
