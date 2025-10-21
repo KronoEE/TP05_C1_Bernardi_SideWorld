@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
@@ -12,6 +13,7 @@ public class EnemyController : MonoBehaviour
 
     private Rigidbody2D rb;
     private float movementX;
+    private bool isAttacking;
     private bool isMoving;
     private bool playerAlive;
     private bool isDead;
@@ -80,16 +82,32 @@ public class EnemyController : MonoBehaviour
 
         if (collision.gameObject.layer == playerLayer)
         {
-            Vector2 directionDamage = new Vector2(transform.position.x, 0);
-            PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
-
-            playerScript.TakingDamage(directionDamage, 1);
-            playerAlive = !playerScript.isDead;
-            if (!playerAlive)
+            float distance = Vector2.Distance(transform.position, collision.transform.position);
+            bool isInRange = distance <= data.attackRange;
+            if (isInRange)
             {
-                isMoving = false;
+                animator.SetBool("isInRange", isInRange);
+                isAttacking = true;
+                animator.SetBool("isAttacking", isAttacking);
+                Vector2 directionDamage = new Vector2(transform.position.x, 0);
+                PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
+
+                playerScript.TakingDamage(directionDamage, 1);
+                playerAlive = !playerScript.isDead;
+                if (!playerAlive)
+                {
+                    isMoving = false;
+                    isInRange = false;
+                }
             }
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isAttacking = false;
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isInRange", false);
     }
     private void Die()
     {
