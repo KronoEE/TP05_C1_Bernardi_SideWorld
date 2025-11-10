@@ -56,12 +56,6 @@ public class EnemyPlantController : MonoBehaviour
             }
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isAttacking = false;
-        animator.SetBool("isAttacking", false);
-        animator.SetBool("isInRange", false);
-    }
     private void FacePlayer(Transform player)
     {
         if (player == null) return;
