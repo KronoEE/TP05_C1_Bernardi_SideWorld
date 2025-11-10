@@ -4,7 +4,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Healthbar healthbar;
     [SerializeField] private PlayerDataSO data;
-    [SerializeField] private LayerMask layerMask;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject deathPanel;
     [SerializeField] private CoinManager coinManager;
@@ -16,12 +15,12 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool takingDamage;
     private bool m_FacingRight = true;
+    private int currentJumpForce;
+    private int currentHealth;
+    private bool bisAttacking;
 
-    public int currentJumpForce;
     public bool attackCondition;
-    public bool bisAttacking;
     public bool isDead;
-    public int currentHealth;
     public int coins = 0;
 
     private void Awake()
@@ -42,9 +41,9 @@ public class PlayerController : MonoBehaviour
             if (!bisAttacking)
             {
                 Movement();
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, layerMask);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, data.lengthRayCast, data.layerMask);
                 isGrounded = hit.collider != null;
-                if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
+                if (Input.GetKeyDown(data.jumpKey) && isGrounded && !takingDamage)
                 {
                     audioManager.PlaySFX(audioManager.jumpSfx);
                     rb.AddForce(new Vector2(0f, currentJumpForce), ForceMode2D.Impulse);
@@ -52,7 +51,7 @@ public class PlayerController : MonoBehaviour
             }
             bool condition = !bisAttacking && isGrounded;
             attackCondition = condition;
-            if (Input.GetKeyDown(KeyCode.E) && attackCondition)
+            if (Input.GetKeyDown(data.attackKey) && attackCondition)
             {
                 audioManager.PlaySFX(audioManager.ShootSfx);
                 Attacking();

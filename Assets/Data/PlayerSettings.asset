@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1b0e5e22cd5e244989d7b173aa3f52, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  velocity: 6
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2147483648
+  jumpKey: 32
+  attackKey: 101
   reboundForce: 10
   lengthRayCast: 1
-  maxHealth: 3
+  jumpBoostDuration: 5
   maxJumpForce: 10
   jumpForceToAdd: 5
-  jumpBoostDuration: 5
+  velocity: 6
+  maxHealth: 3
