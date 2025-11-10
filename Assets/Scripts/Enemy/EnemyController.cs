@@ -1,8 +1,9 @@
 using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private Healthbar healthbar;
+    [Header("References")]
     [SerializeField] private Transform player;
+    [SerializeField] private Healthbar healthbar;
     [SerializeField] private EnemyDataSO data;
     [SerializeField] private ParticleSystem deathEffect;
 
@@ -14,6 +15,7 @@ public class EnemyController : MonoBehaviour
     private bool isDead;
     private Rigidbody2D rb;
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private void Start()
     {
         currentHealth = data.maxHealth;
@@ -22,17 +24,32 @@ public class EnemyController : MonoBehaviour
         isDead = false;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Update()
     {
+        if (player == null)
+        {
+            playerAlive = false;
+            isMoving = false;
+            animator.SetBool("isMoving", false);
+            return;
+        }
+
         if (playerAlive && !isDead)
         {
             Movement();
         }
+
         animator.SetBool("isMoving", isMoving);
     }
     public void TakingDamage(int damageAmount)
     {
+            if (isDead) return;
+            if (player != null)
+            {
+                FacePlayer(player);
+            }
             currentHealth -= damageAmount;
             healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
             if (currentHealth <= 0)
@@ -49,14 +66,7 @@ public class EnemyController : MonoBehaviour
         if (distanceToPlayer < data.detectionRadius)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-            if (direction.x < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            if (direction.x > 0)
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
+            spriteRenderer.flipX = (direction.x < 0);
             movementX = direction.x;
             isMoving = true;
         }
@@ -65,7 +75,7 @@ public class EnemyController : MonoBehaviour
             movementX = 0;
             isMoving = false;
         }
-            rb.velocity = new Vector2(movementX * data.speed, rb.velocity.y);
+        rb.velocity = new Vector2(movementX * data.speed, rb.velocity.y);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -77,9 +87,11 @@ public class EnemyController : MonoBehaviour
             bool isInRange = distance <= data.attackRange;
             if (isInRange)
             {
+                FacePlayer(player);
                 animator.SetBool("isInRange", isInRange);
                 isAttacking = true;
                 animator.SetBool("isAttacking", isAttacking);
+
                 Vector2 directionDamage = new Vector2(transform.position.x, 0);
                 PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
 
@@ -92,6 +104,11 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
+    }
+    private void FacePlayer(Transform player)
+    {
+        if (player == null) return;
+        spriteRenderer.flipX = (player.position.x < transform.position.x);
     }
     public void EndAttack()
     {
@@ -108,5 +125,3 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject, 0.5f);
     }
 }
-
-

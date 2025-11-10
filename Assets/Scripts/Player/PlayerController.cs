@@ -2,11 +2,13 @@ using System.Collections;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Healthbar healthbar;
     [SerializeField] private PlayerDataSO data;
     [SerializeField] private Animator animator;
-    [SerializeField] private GameObject deathPanel;
     [SerializeField] private CoinManager coinManager;
+    [Header("Panels")]
+    [SerializeField] private GameObject deathPanel;
     [SerializeField] private GameObject panelWin;
 
     AudioManager audioManager;
@@ -18,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private int currentJumpForce;
     private int currentHealth;
     private bool bisAttacking;
-
+    [Header("Public variables")]
     public bool attackCondition;
     public bool isDead;
     public int coins = 0;
@@ -163,6 +165,7 @@ public class PlayerController : MonoBehaviour
         if (currentHealth > data.maxHealth)
         {
             currentHealth = data.maxHealth;
+            healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
         }
     }
 }

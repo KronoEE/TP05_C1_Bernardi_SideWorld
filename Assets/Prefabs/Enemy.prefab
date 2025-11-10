@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 369560213125729766}
   - component: {fileID: 8490964965810142478}
   - component: {fileID: 4537412260833698997}
-  - component: {fileID: 3634994031572507990}
+  - component: {fileID: 1159972863650348567}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -158,7 +158,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 8762964188819179665, guid: 4af081013177c34429cfc23ecdecaf1b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.75, y: 1.90625}
@@ -243,12 +243,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa1ee82c586f714dbec2d5e0d83c449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthbar: {fileID: 1042162508688271629}
   player: {fileID: 0}
+  healthbar: {fileID: 1042162508688271629}
   data: {fileID: 11400000, guid: 7db23cdf7a36d5e458f20612c3d9d111, type: 2}
-  currenthHealth: 0
   deathEffect: {fileID: 3102809954353889741, guid: bc9bf3538dd3d954baac80d4253e29dd, type: 3}
---- !u!95 &3634994031572507990
+--- !u!95 &1159972863650348567
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
