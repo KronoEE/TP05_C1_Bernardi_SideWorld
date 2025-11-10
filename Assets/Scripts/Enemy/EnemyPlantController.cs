@@ -9,9 +9,8 @@ public class EnemyPlantController : MonoBehaviour
     private bool isAttacking;
     private bool playerAlive;
     private bool isDead;
-    private int currentHealth = 100;
+    private int currentHealth;
 
-    private Rigidbody2D rb;
     private Animator animator;
     private void Start()
     {
@@ -19,12 +18,12 @@ public class EnemyPlantController : MonoBehaviour
         healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
         playerAlive = true;
         isDead = false;
-        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
     public void TakingDamage(int damageAmount)
     {
             currentHealth -= damageAmount;
+            healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
             if (currentHealth <= 0)
             {
                 isDead = true;
@@ -85,8 +84,6 @@ public class EnemyPlantController : MonoBehaviour
     private void Die()
     {
         Instantiate(deathEffect, transform.position, Quaternion.identity);
-        rb.velocity = Vector2.zero;
-
         animator.SetBool("isDead", isDead);
         Destroy(gameObject, 0.5f);
     }

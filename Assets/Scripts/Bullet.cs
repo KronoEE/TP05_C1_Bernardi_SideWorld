@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -12,13 +10,23 @@ public class Bullet : MonoBehaviour
     {
         rb.velocity = transform.right * speed;
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyController enemy = collision.GetComponent<EnemyController>();
-        if (enemy != null)
+        Debug.Log("Bullet collided with: " + collision.gameObject.name);
+
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        if (collision.gameObject.layer == enemyLayer)
         {
-            enemy.TakingDamage(damage);
+            EnemyController enemy = collision.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+               enemy.TakingDamage(damage);
+            }
+            EnemyPlantController plantEnemy = collision.GetComponent<EnemyPlantController>();
+            if (plantEnemy != null)
+            {
+                plantEnemy.TakingDamage(damage);
+            } 
         }
         Instantiate(hitEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);

@@ -5,16 +5,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Healthbar healthbar;
     [SerializeField] private PlayerDataSO data;
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject deathPanel;
     [SerializeField] private CoinManager coinManager;
+    [SerializeField] private GameObject panelWin;
 
     AudioManager audioManager;
 
+    private Rigidbody2D rb;
     private bool isGrounded;
     private bool takingDamage;
     private bool m_FacingRight = true;
+
     public int currentJumpForce;
     public bool attackCondition;
     public bool bisAttacking;
@@ -138,6 +140,14 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             audioManager.PlaySFX(audioManager.coinsSfx);
             coinManager.coinCount++;
+
+            if (coinManager.coinCount == coinManager.goalCoins)
+            {
+                audioManager.Stop();
+                audioManager.PlaySFX(audioManager.WinSfx);
+                panelWin.SetActive(true);
+                Time.timeScale = 0;
+            }
         }
     }
     public IEnumerator TemporaryJumpBoost()
@@ -150,6 +160,7 @@ public class PlayerController : MonoBehaviour
     public void HealthBoost()
     {
         currentHealth += data.maxHealth;
+        healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
         if (currentHealth > data.maxHealth)
         {
             currentHealth = data.maxHealth;

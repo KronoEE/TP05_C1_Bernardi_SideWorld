@@ -4,8 +4,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Healthbar healthbar;
     [SerializeField] private Transform player;
     [SerializeField] private EnemyDataSO data;
-    [SerializeField] private int currenthHealth;
     [SerializeField] private ParticleSystem deathEffect;
+
+    private int currentHealth;
     private float movementX;
     private bool isAttacking;
     private bool isMoving;
@@ -15,8 +16,8 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     private void Start()
     {
-        currenthHealth = data.maxHealth;
-        healthbar.UpdateHealthBar(data.maxHealth, currenthHealth);
+        currentHealth = data.maxHealth;
+        healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
         playerAlive = true;
         isDead = false;
         rb = GetComponent<Rigidbody2D>();
@@ -28,14 +29,13 @@ public class EnemyController : MonoBehaviour
         {
             Movement();
         }
-
         animator.SetBool("isMoving", isMoving);
     }
     public void TakingDamage(int damageAmount)
     {
-            currenthHealth -= damageAmount;
-            healthbar.UpdateHealthBar(data.maxHealth, currenthHealth);
-            if (currenthHealth <= 0)
+            currentHealth -= damageAmount;
+            healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
+            if (currentHealth <= 0)
             {
                 isDead = true;
                 isMoving = false;
@@ -49,7 +49,6 @@ public class EnemyController : MonoBehaviour
         if (distanceToPlayer < data.detectionRadius)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-
             if (direction.x < 0)
             {
                 transform.localScale = new Vector3(-1, 1, 1);
@@ -58,9 +57,7 @@ public class EnemyController : MonoBehaviour
             {
                 transform.localScale = new Vector3(1, 1, 1);
             }
-
             movementX = direction.x;
-
             isMoving = true;
         }
         else
@@ -86,7 +83,7 @@ public class EnemyController : MonoBehaviour
                 Vector2 directionDamage = new Vector2(transform.position.x, 0);
                 PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
 
-                playerScript.TakingDamage(directionDamage, 1);
+                playerScript.TakingDamage(directionDamage, data.damageAmount);
                 playerAlive = !playerScript.isDead;
                 if (!playerAlive)
                 {
