@@ -1,74 +1,35 @@
 using UnityEngine;
-public class EnemyController : MonoBehaviour
+public class EnemyPlantController : MonoBehaviour
 {
     [SerializeField] private Healthbar healthbar;
     [SerializeField] private Transform player;
     [SerializeField] private EnemyDataSO data;
-    [SerializeField] private int currenthHealth;
     [SerializeField] private ParticleSystem deathEffect;
-    private float movementX;
+
     private bool isAttacking;
-    private bool isMoving;
     private bool playerAlive;
     private bool isDead;
+    private int currentHealth = 100;
+
     private Rigidbody2D rb;
     private Animator animator;
     private void Start()
     {
-        currenthHealth = data.maxHealth;
-        healthbar.UpdateHealthBar(data.maxHealth, currenthHealth);
+        currentHealth = data.maxHealth;
+        healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
         playerAlive = true;
         isDead = false;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
-    private void Update()
-    {
-        if (playerAlive && !isDead)
-        {
-            Movement();
-        }
-
-        animator.SetBool("isMoving", isMoving);
-    }
     public void TakingDamage(int damageAmount)
     {
-            currenthHealth -= damageAmount;
-            healthbar.UpdateHealthBar(data.maxHealth, currenthHealth);
-            if (currenthHealth <= 0)
+            currentHealth -= damageAmount;
+            if (currentHealth <= 0)
             {
                 isDead = true;
-                isMoving = false;
                 Die();
             }
-    }
-    private void Movement()
-    {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        if (distanceToPlayer < data.detectionRadius)
-        {
-            Vector2 direction = (player.position - transform.position).normalized;
-
-            if (direction.x < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            if (direction.x > 0)
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-
-            movementX = direction.x;
-
-            isMoving = true;
-        }
-        else
-        {
-            movementX = 0;
-            isMoving = false;
-        }
-            rb.velocity = new Vector2(movementX * data.speed, rb.velocity.y);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -80,23 +41,42 @@ public class EnemyController : MonoBehaviour
             bool isInRange = distance <= data.attackRange;
             if (isInRange)
             {
+                FacePlayer(collision.transform);
                 animator.SetBool("isInRange", isInRange);
                 isAttacking = true;
                 animator.SetBool("isAttacking", isAttacking);
                 Vector2 directionDamage = new Vector2(transform.position.x, 0);
                 PlayerController playerScript = collision.gameObject.GetComponent<PlayerController>();
 
-                playerScript.TakingDamage(directionDamage, 1);
+                playerScript.TakingDamage(directionDamage, data.damageAmount);
                 playerAlive = !playerScript.isDead;
                 if (!playerAlive)
                 {
-                    isMoving = false;
                     isInRange = false;
                 }
             }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
+    {
+        isAttacking = false;
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isInRange", false);
+    }
+    private void FacePlayer(Transform player)
+    {
+        if (player == null) return;
+
+        if (player.position.x < transform.position.x)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
+    public void EndAttack()
     {
         isAttacking = false;
         animator.SetBool("isAttacking", false);

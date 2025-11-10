@@ -15,3 +15,7 @@ MonoBehaviour:
   velocity: 6
   reboundForce: 10
   lengthRayCast: 1
+  maxHealth: 3
+  maxJumpForce: 10
+  jumpForceToAdd: 5
+  jumpBoostDuration: 5

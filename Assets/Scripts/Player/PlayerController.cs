@@ -1,12 +1,8 @@
-using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Video;
-
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Healthbar healthbar;
     [SerializeField] private PlayerDataSO data;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Rigidbody2D rb;
@@ -19,13 +15,12 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool takingDamage;
     private bool m_FacingRight = true;
+    public int currentJumpForce;
     public bool attackCondition;
     public bool bisAttacking;
-    public  bool isDead;
-
+    public bool isDead;
+    public int currentHealth;
     public int coins = 0;
-    public float jumpForce = 10f;
-    public int health = 3;
 
     private void Awake()
     {
@@ -33,6 +28,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        currentHealth = data.maxHealth;
+        currentJumpForce = data.maxJumpForce;
+        healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
         rb = GetComponent<Rigidbody2D>();
     }
     private void Update()
@@ -47,7 +45,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !takingDamage)
                 {
                     audioManager.PlaySFX(audioManager.jumpSfx);
-                    rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                    rb.AddForce(new Vector2(0f, currentJumpForce), ForceMode2D.Impulse);
                 }
             }
             bool condition = !bisAttacking && isGrounded;
@@ -89,8 +87,9 @@ public class PlayerController : MonoBehaviour
         if (!takingDamage)
         {
             takingDamage = true;
-            health -= damageAmount;
-            if (health <= 0)
+            currentHealth -= damageAmount;
+            healthbar.UpdateHealthBar(data.maxHealth, currentHealth);
+            if (currentHealth <= 0)
             {
                 audioManager.Stop();
                 audioManager.PlaySFX(audioManager.LooseSfx);
@@ -120,6 +119,7 @@ public class PlayerController : MonoBehaviour
 
     public void DeactiveAttack()
     {
+        animator.SetBool("attacking", !bisAttacking);
         bisAttacking = false;
     }
     private void Flip()
@@ -129,7 +129,6 @@ public class PlayerController : MonoBehaviour
 
         transform.Rotate(0f, 180f, 0f);
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         int coinLayer = LayerMask.NameToLayer("Coin");
@@ -139,6 +138,21 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             audioManager.PlaySFX(audioManager.coinsSfx);
             coinManager.coinCount++;
+        }
+    }
+    public IEnumerator TemporaryJumpBoost()
+    {
+        currentJumpForce = currentJumpForce + data.jumpForceToAdd;
+        yield return new WaitForSeconds(data.jumpBoostDuration);
+
+        currentJumpForce = data.maxJumpForce;
+    }
+    public void HealthBoost()
+    {
+        currentHealth += data.maxHealth;
+        if (currentHealth > data.maxHealth)
+        {
+            currentHealth = data.maxHealth;
         }
     }
 }
