@@ -24,10 +24,10 @@ Saltá, esquivá peligros y enfrentate a enemigos mientras explorás un entorno 
 
 ## 👤 Autor y Créditos
 
-Desarrollado por: JuanDev
-Motor: Unity
-Arte: itch.io marketplace | unity asset store
-Música y SFX: freesound
+- Desarrollado por: JuanDev
+- Motor: Unity
+- Arte: itch.io marketplace | unity asset store
+- Música y SFX: freesound
 
 ## Link itch.io
 https://juandev19.itch.io/
